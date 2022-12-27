@@ -96,7 +96,7 @@ could reject with the first rejected promise in your list of promises. This way
 you reject with the same promise regardless of which one rejects first
 (time-wise). This is what
 [Remix was doing to keep concurrent loader execution deterministic](https://github.com/remix-run/remix/blob/ffc6000cde2bcdd99c9db53f0b116dabfb2da65e/packages/remix-server-runtime/server.ts#L301)
-(and maybe still does, but I couldn't figure where that's done at latest
+(and maybe still does, but I couldn't figure where that's done at the latest
 commit).
 
 But can we do better? What if the first promise in your list is the first
