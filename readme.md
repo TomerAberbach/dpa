@@ -18,7 +18,7 @@
 </div>
 
 <div align="center">
-  Resolves promises concurrently with deterministic rejection order. Somewhere between Promise.all and Promise.allSettled.
+  Resolves promises concurrently with deterministic rejection order. Somewhere between <code>Promise.all</code> and <code>Promise.allSettled</code>.
 </div>
 
 ## Features
