@@ -1,0 +1,52 @@
+{
+  "name": "dpa",
+  "version": "0.0.0",
+  "author": {
+    "name": "Tomer Aberbach",
+    "email": "tomeraberbach@gmail.com",
+    "url": "https://tomeraberba.ch"
+  },
+  "description": "Resolves promises concurrently with deterministic rejection order. Somewhere between Promise.all and Promise.allSettled.",
+  "keywords": [],
+  "homepage": "https://github.com/TomerAberbach/dpa",
+  "repository": "TomerAberbach/dpa",
+  "bugs": {
+    "url": "https://github.com/TomerAberbach/dpa/issues"
+  },
+  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">= 14.6"
+  },
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.min.cjs",
+    "import": "./dist/index.min.js"
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.min.cjs",
+  "module": "./dist/index.min.js",
+  "scripts": {
+    "prepare": "tomer install",
+    "format": "tomer format",
+    "lint": "tomer lint",
+    "typecheck": "tomer typecheck",
+    "test": "tomer test",
+    "build": "tomer build",
+    "clean": "tomer clean dist",
+    "prepublishOnly": "tomer build"
+  },
+  "prettier": "tomer/prettier",
+  "terser": {
+    "keep_fnames": true
+  },
+  "devDependencies": {
+    "@types/jest": "^29.2.4",
+    "p-state": "^1.0.0",
+    "tomer": "^1.2.0"
+  }
+}
