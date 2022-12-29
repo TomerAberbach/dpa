@@ -78,7 +78,7 @@ Everything _seems_ to work great, but what if the promises returned by
 `checkThing1` and `checkThing2` both reject? What does the user see? The answer
 is it depends on which one rejects first!
 
-That's right. You're error page is nondeterministic. The user can visit the same
+That's right. Your error page is nondeterministic. The user can visit the same
 URL with the same authorization state and receive a different page purely based
 on how quickly each authorization check completes.
 
