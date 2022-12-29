@@ -7,7 +7,16 @@
     "url": "https://tomeraberba.ch"
   },
   "description": "Resolves promises concurrently with deterministic rejection order. Somewhere between Promise.all and Promise.allSettled.",
-  "keywords": [],
+  "keywords": [
+    "promise",
+    "promise.all",
+    "promise.allsettled",
+    "allsettled",
+    "await",
+    "deterministic",
+    "concurrent",
+    "reject"
+  ],
   "homepage": "https://github.com/TomerAberbach/dpa",
   "repository": "TomerAberbach/dpa",
   "bugs": {
