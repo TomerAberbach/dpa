@@ -15,7 +15,6 @@
  */
 
 /* eslint-disable no-throw-literal */
-
 import dpa from './src/index.js'
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))

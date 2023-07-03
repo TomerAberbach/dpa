@@ -15,9 +15,8 @@
  */
 
 /* eslint-disable typescript/no-throw-literal */
-
-import { expectTypeOf, fc, jest, testProp } from 'tomer'
 import { promiseStateSync } from 'p-state'
+import { expectTypeOf, fc, jest, testProp } from 'tomer'
 import dpa from '../src/index.js'
 
 jest.useFakeTimers()
