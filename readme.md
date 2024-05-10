@@ -10,10 +10,10 @@
     <img src="https://github.com/TomerAberbach/dpa/workflows/CI/badge.svg" alt="CI" />
   </a>
   <a href="https://unpkg.com/dpa/dist/index.min.js">
-    <img src="http://img.badgesize.io/https://unpkg.com/dpa/dist/index.min.js?compression=gzip&label=gzip" alt="gzip size" />
+    <img src="https://deno.bundlejs.com/?q=dpa&badge" alt="gzip size" />
   </a>
   <a href="https://unpkg.com/dpa/dist/index.min.js">
-    <img src="http://img.badgesize.io/https://unpkg.com/dpa/dist/index.min.js?compression=brotli&label=brotli" alt="brotli size" />
+    <img src="https://deno.bundlejs.com/?q=dpa&config={%22compression%22:{%22type%22:%22brotli%22}}&badge" alt="brotli size" />
   </a>
 </div>
 

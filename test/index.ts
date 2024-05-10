@@ -16,27 +16,26 @@
 
 /* eslint-disable typescript/no-throw-literal */
 import { promiseStateSync } from 'p-state'
-import { expectTypeOf, fc, jest, testProp } from 'tomer'
+import { expectTypeOf, fc, jest, test } from 'tomer'
 import dpa from '../src/index.js'
 
 jest.useFakeTimers()
 
-testProp(
-  `dpa behaves like Promise.all for resolved promises`,
-  [
-    fc
-      .array(
-        fc.oneof(
-          fc.anything().map(value => () => value),
-          fc.tuple(fc.nat(), fc.anything()).map(
-            ([ms, value]) =>
-              () =>
-                delay(ms).then(() => value),
-          ),
+test.prop([
+  fc
+    .array(
+      fc.oneof(
+        fc.anything().map(value => () => value),
+        fc.tuple(fc.nat(), fc.anything()).map(
+          ([ms, value]) =>
+            () =>
+              delay(ms).then(() => value),
         ),
-      )
-      .map(getValues => () => getValues.map(getValue => getValue())),
-  ],
+      ),
+    )
+    .map(getValues => () => getValues.map(getValue => getValue())),
+])(
+  `dpa behaves like Promise.all for resolved promises`,
   async getResolvingValues => {
     const now1 = Date.now()
     const values1Promise = Promise.all(getResolvingValues())
@@ -55,22 +54,21 @@ testProp(
   },
 )
 
-testProp(
+test.prop([
+  fc.context(),
+  fc
+    .array(
+      fc.tuple(fc.integer({ min: 1 }), fc.anything(), fc.boolean()).map(
+        ([ms, value, shouldResolve]) =>
+          () =>
+            delay(ms).then(() =>
+              shouldResolve ? value : Promise.reject(value),
+            ),
+      ),
+    )
+    .map(getValues => () => getValues.map(getValue => getValue())),
+])(
   `dpa is as fast as or faster than Promise.allSettled`,
-  [
-    fc.context(),
-    fc
-      .array(
-        fc.tuple(fc.integer({ min: 1 }), fc.anything(), fc.boolean()).map(
-          ([ms, value, shouldResolve]) =>
-            () =>
-              delay(ms).then(() =>
-                shouldResolve ? value : Promise.reject(value),
-              ),
-        ),
-      )
-      .map(getValues => () => getValues.map(getValue => getValue())),
-  ],
   async (context, getAwaitableValues) => {
     const allSettledNow = Date.now()
     const allSettledPromise = Promise.allSettled(getAwaitableValues())
