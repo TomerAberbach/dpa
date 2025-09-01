@@ -4,19 +4,19 @@
 
 <div align="center">
   <a href="https://npmjs.org/package/dpa">
-    <img src="https://badgen.now.sh/npm/v/dpa" alt="version" />
+    <img src="https://badgen.net/npm/v/dpa" alt="version" />
   </a>
   <a href="https://github.com/TomerAberbach/dpa/actions">
     <img src="https://github.com/TomerAberbach/dpa/workflows/CI/badge.svg" alt="CI" />
   </a>
-  <a href="https://unpkg.com/dpa/dist/index.min.js">
+  <a href="https://unpkg.com/dpa/dist/index.js">
     <img src="https://deno.bundlejs.com/?q=dpa&badge" alt="gzip size" />
   </a>
-  <a href="https://unpkg.com/dpa/dist/index.min.js">
+  <a href="https://unpkg.com/dpa/dist/index.js">
     <img src="https://deno.bundlejs.com/?q=dpa&config={%22compression%22:{%22type%22:%22brotli%22}}&badge" alt="brotli size" />
   </a>
   <a href="https://github.com/sponsors/TomerAberbach">
-    <img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86" alt="Sponsor">
+    <img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86" alt="Sponsor" />
   </a>
 </div>
 
@@ -117,9 +117,9 @@ the list resolved, then we can immediately reject with that promise. That's what
 <!-- eslint-disable no-throw-literal -->
 
 ```js
+import { setTimeout } from 'node:timers/promises'
 import dpa from 'dpa'
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 const test = async fn => {
   const start = Date.now()
   try {
@@ -135,9 +135,9 @@ const test = async fn => {
 
 await test(() =>
   dpa([
-    delay(1000).then(() => 1),
-    delay(4000).then(() => 2),
-    delay(5000).then(() => 3),
+    setTimeout(1000).then(() => 1),
+    setTimeout(4000).then(() => 2),
+    setTimeout(5000).then(() => 3),
   ]),
 )
 // => [1, 2, 3]
@@ -145,11 +145,11 @@ await test(() =>
 
 await test(() =>
   dpa([
-    delay(1000).then(() => 1),
-    delay(4000).then(() => {
+    setTimeout(1000).then(() => 1),
+    setTimeout(4000).then(() => {
       throw 2
     }),
-    delay(6000).then(() => {
+    setTimeout(6000).then(() => {
       throw 3
     }),
   ]),
@@ -160,11 +160,11 @@ await test(() =>
 await test(() =>
   dpa([
     dpa([
-      delay(1000).then(() => 1),
-      delay(6000).then(() => {
+      setTimeout(1000).then(() => 1),
+      setTimeout(6000).then(() => {
         throw 2
       }),
-      delay(2000).then(() => {
+      setTimeout(2000).then(() => {
         throw 3
       }),
     ]),
@@ -181,11 +181,9 @@ Stars are always welcome!
 For bugs and feature requests,
 [please create an issue](https://github.com/TomerAberbach/dpa/issues/new).
 
-For pull requests, please read the
-[contributing guidelines](https://github.com/TomerAberbach/dpa/blob/main/contributing.md).
-
 ## License
 
-[Apache License 2.0](https://github.com/TomerAberbach/dpa/blob/main/license)
-
-This is not an official Google product.
+[MIT](https://github.com/TomerAberbach/dpa/blob/main/license-mit) ©
+[Tomer Aberbach](https://github.com/TomerAberbach) \
+[Apache 2.0](https://github.com/TomerAberbach/dpa/blob/main/license-apache) ©
+[Google](https://github.com/TomerAberbach/dpa/blob/main/notice-apache)
