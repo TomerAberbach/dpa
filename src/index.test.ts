@@ -1,25 +1,15 @@
-/**
- * Copyright 2022 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/* eslint-disable typescript/no-throw-literal */
+/* eslint-disable typescript/only-throw-error */
 import { promiseStateSync } from 'p-state'
-import { expectTypeOf, fc, jest, test } from 'tomer'
-import dpa from '../src/index.js'
+import { fc, test } from '@fast-check/vitest'
+import { afterEach, beforeEach, expect, expectTypeOf, vi } from 'vitest'
+import dpa from './index.js'
 
-jest.useFakeTimers()
+beforeEach(() => {
+  vi.useFakeTimers()
+})
+afterEach(() => {
+  vi.useRealTimers()
+})
 
 test.prop([
   fc
@@ -39,13 +29,13 @@ test.prop([
   async getResolvingValues => {
     const now1 = Date.now()
     const values1Promise = Promise.all(getResolvingValues())
-    jest.runAllTimers()
+    vi.runAllTimers()
     const values1 = await values1Promise
     const elapsed1 = Date.now() - now1
 
     const now2 = Date.now()
     const values2Promise = dpa(getResolvingValues())
-    jest.runAllTimers()
+    vi.runAllTimers()
     const values2 = await values2Promise
     const elapsed2 = Date.now() - now2
 
@@ -62,6 +52,7 @@ test.prop([
         ([ms, value, shouldResolve]) =>
           () =>
             delay(ms).then(() =>
+              // eslint-disable-next-line typescript/prefer-promise-reject-errors
               shouldResolve ? value : Promise.reject(value),
             ),
       ),
@@ -72,15 +63,14 @@ test.prop([
   async (context, getAwaitableValues) => {
     const allSettledNow = Date.now()
     const allSettledPromise = Promise.allSettled(getAwaitableValues())
-    jest.runAllTimers()
+    vi.runAllTimers()
     await allSettledPromise
     const allSettledElapsed = Date.now() - allSettledNow
 
     const dpaNow = Date.now()
-    // eslint-disable-next-line typescript/no-empty-function
     const dpaPromise = dpa(getAwaitableValues()).catch(() => {})
     while (promiseStateSync(dpaPromise) === `pending`) {
-      jest.advanceTimersToNextTimer()
+      vi.advanceTimersToNextTimer()
       await Promise.resolve()
     }
     const dpaElapsed = Date.now() - dpaNow
@@ -99,7 +89,7 @@ test(`dpa all resolving`, async () => {
   const now = Date.now()
 
   const resultsPromise = dpa(promises)
-  jest.runAllTimers()
+  vi.runAllTimers()
   const results = await resultsPromise
 
   const elapsed = Date.now() - now
@@ -121,7 +111,7 @@ test(`dpa one rejecting`, async () => {
   const resultsPromise = dpa(promises)
   let error
   try {
-    jest.advanceTimersByTime(5)
+    vi.advanceTimersByTime(5)
     await resultsPromise
   } catch (error_: unknown) {
     error = error_
@@ -148,7 +138,7 @@ test(`dpa multiple rejecting, higher first`, async () => {
   const resultsPromise = dpa(promises)
   let error
   try {
-    jest.advanceTimersByTime(5)
+    vi.advanceTimersByTime(5)
     await resultsPromise
   } catch (error_: unknown) {
     error = error_
@@ -175,7 +165,7 @@ test(`dpa multiple rejecting, lower first`, async () => {
   const resultsPromise = dpa(promises)
   let error
   try {
-    jest.advanceTimersByTime(5)
+    vi.advanceTimersByTime(5)
     await resultsPromise
   } catch (error_: unknown) {
     error = error_
@@ -187,4 +177,6 @@ test(`dpa multiple rejecting, lower first`, async () => {
 })
 
 const delay = (ms: number): Promise<void> =>
-  new Promise(resolve => setTimeout(resolve, ms))
+  new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
